@@ -15,7 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//微信
+Route::any('/wechat/index','WechatController@index');
 
+
+
+//测试
 Route::any('/test/hello','test\\TestController@hello');
 Route::any('/user/adduser','user\\LoginController@adduser');
 Route::any('/user/redis1','user\\LoginController@redis1');

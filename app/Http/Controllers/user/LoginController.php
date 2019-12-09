@@ -38,6 +38,6 @@ class LoginController extends Controller
 
     public function index()
     {
-        echo 'lijian';
+        echo '线下测试';
     }
 }
