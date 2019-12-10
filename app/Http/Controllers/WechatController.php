@@ -28,5 +28,16 @@ class WechatController extends Controller
             die("not ok");
         }
     }
-    
+
+    public function receiv()
+    {
+        $log="wechat.log";
+        $xml_str=file_get_contents("php://input");
+        //将接收的数据记录到日志文件
+        $data= date('Y-m-d H:i:s') . $xml_str;
+        file_put_contents($log,$data,FILE_APPEND);
+        $xml_obj=simplexml_load_string($xml_str);//处理xml数据
+        
+    }
+
 }
