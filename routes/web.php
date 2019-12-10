@@ -17,11 +17,12 @@ Route::get('/', function () {
 
 //微信
 Route::any('/wechat/index','WechatController@index');
+Route::post('/wechat/receiv','WechatController@receiv');
 
 
 
 //测试
-Route::any('/test/hello','test\\TestController@hello');
-Route::any('/user/adduser','user\\LoginController@adduser');
-Route::any('/user/redis1','user\\LoginController@redis1');
-Route::any('/user/index','user\\LoginController@index');
+Route::get('/test/hello','test\\TestController@hello');
+Route::get('/user/adduser','user\\LoginController@adduser');
+Route::get('/user/redis1','user\\LoginController@redis1');
+Route::get('/user/index','user\\LoginController@index');

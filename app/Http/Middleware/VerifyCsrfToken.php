@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        "/wechat/receiv",   //忽略当前路由的CSRF
     ];
 }
