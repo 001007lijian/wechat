@@ -34,9 +34,18 @@ class WechatController extends Controller
     /*接收微信推送事件*/
     public function receiv()
     {
-        $logs="wechat.log";
+        $log="wechat.log";
+        $sml=file_get_contents("php://input");
         //将接收的数据记录到日志文件
-        $data=json_decode($_POST);
-        file_put_contents($logs,$data,FILE_APPEND);
+        $data= date('Y-m-d H:i:s') . $xml;
+        file_put_contents($log,$data,FILE_APPEND);
+    }
+
+
+    //获取用户基本信息
+    public function getUserInfo()
+    {
+        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+";
     }
 }
