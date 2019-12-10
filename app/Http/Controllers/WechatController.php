@@ -9,7 +9,7 @@ class WechatController extends Controller
 {
     public function index()
     {
-        $token = 'token';       //开发提前设置好的 token
+        $token = 'ljnbyzyq666';       //开发提前设置好的 token
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
