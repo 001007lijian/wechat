@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 
 //微信
-Route::any('/wechat/index','WechatController@index');
-Route::post('/wechat/receiv','WechatController@receiv');
+Route::get('/wechat/wechat','WechatController@index');
+Route::post('/wechat/wechat','WechatController@receiv');
 
 
 
