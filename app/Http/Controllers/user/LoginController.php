@@ -40,4 +40,19 @@ class LoginController extends Controller
     {
         echo '线下测试';
     }
+
+    public function xml()
+    {
+        $xml_str="<xml>
+              <ToUserName><![CDATA[toUser]]></ToUserName>
+              <FromUserName><![CDATA[fromUser]]></FromUserName>
+              <CreateTime>12345678</CreateTime>
+              <MsgType><![CDATA[text]]></MsgType>
+              <Content><![CDATA[你好]]></Content>
+            </xml>";
+
+        $xml_arr=simplexml_load_string($xml_str);
+        echo '<pre>';  print_r($xml_arr); echo '</pre>';echo "<hr/>";
+        echo "ToUserName:" . $xml_arr->ToUserName;
+    }
 }

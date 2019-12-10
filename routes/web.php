@@ -26,3 +26,4 @@ Route::get('/test/hello','test\\TestController@hello');
 Route::get('/user/adduser','user\\LoginController@adduser');
 Route::get('/user/redis1','user\\LoginController@redis1');
 Route::get('/user/index','user\\LoginController@index');
+Route::get('/user/xml','user\\LoginController@xml');
