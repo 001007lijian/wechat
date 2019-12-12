@@ -91,7 +91,7 @@ class WechatController extends Controller
                 ];
                 //信息入库
                 $uid=WechatModel::insertGetId($user_data);
-                $msg="谢谢关注";
+                $msg=$user_data['nickname']."谢谢你的关注";
                 $response_text='<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
