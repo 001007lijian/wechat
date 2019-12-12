@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Model\WechatModel;
 use Illuminate\Http\Request;
 
 class WechatController extends Controller
@@ -55,17 +56,50 @@ class WechatController extends Controller
         $log="wechat.log";
         $xml_str=file_get_contents("php://input");
         //将接收的数据记录到日志文件
-        $data= date('Y-m-d H:i:s') . $xml_str;
+        $data=date('Y-m-d H:i:s').'>>>>>>\n'. $xml_str;
         file_put_contents($log,$data,FILE_APPEND);
+
+
         $xml_obj=simplexml_load_string($xml_str);//处理xml数据
 
         $event=$xml_obj->Event;//获取事件类型
         if ($event=='subscribe') {
-            $openid=$xml_obj->FromUserName;//获取用的openid
-            /*获取用户信息*/
-            $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
-            $user_info=file_get_contents($url);
-            file_put_contents('wechat.log,$user_info,FILE_APPEND');
+            $openid=$xml_obj->FromUserName;//获取用户的openid
+            $user=WechatModel::where(['openid'=>$openid])->first();
+            if ($user) {
+                $msg="欢迎回来";
+                $response_text="<xml>
+                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA['.$msg.']]></Content>
+                        </xml>";
+                //欢迎回家
+                echo $response_text;
+            }else{
+                /*获取用户信息*/
+                $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
+                $user_info=file_get_contents($url);
+                $data=json_decode($user_info,true);
+                $user_data=[
+                    'openid'=> $openid,
+                    'subscribe_time'=>$data['subscribe_time'],
+                    'nickname'=>$data['nickname'],
+                    'sex'=>$data['sex'],
+                ];
+                //信息入库
+                $uid=WechatModel::insertGetId($user_data);
+                $msg="欢迎".$data['nickname']."关注成功";
+                $response_text="<xml>
+                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA['.$msg.']]></Content>
+                        </xml>";
+                echo $response_text;
+            }
         }
 
         //判断消息类型
