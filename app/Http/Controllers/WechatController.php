@@ -68,13 +68,13 @@ class WechatController extends Controller
             $user=WechatModel::where(['openid'=>$openid])->first();
             if ($user) {
                 $msg="欢迎回来";
-                $response_text="<xml>
+                $response_text='<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>".time()."</CreateTime>
+                          <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
-                        </xml>";
+                        </xml>';
                 //欢迎回家
                 echo $response_text;
             }else{
@@ -87,17 +87,18 @@ class WechatController extends Controller
                     'subscribe_time'=>$data['subscribe_time'],
                     'nickname'=>$data['nickname'],
                     'sex'=>$data['sex'],
+                    'headimgurl'=>$data['headimgurl'],
                 ];
                 //信息入库
                 $uid=WechatModel::insertGetId($user_data);
                 $msg="谢谢关注";
-                $response_text="<xml>
+                $response_text='<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>".time()."</CreateTime>
+                          <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
-                        </xml>";
+                        </xml>';
                 echo $response_text;
             }
         }
