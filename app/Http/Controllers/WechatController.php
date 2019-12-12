@@ -71,7 +71,7 @@ class WechatController extends Controller
                 $response_text="<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>'.time().'</CreateTime>
+                          <CreateTime>".time()."</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
                         </xml>";
@@ -90,11 +90,11 @@ class WechatController extends Controller
                 ];
                 //信息入库
                 $uid=WechatModel::insertGetId($user_data);
-                $msg="欢迎".$data['nickname']."关注成功";
+                $msg="谢谢关注";
                 $response_text="<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>'.time().'</CreateTime>
+                          <CreateTime>".time()."</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
                         </xml>";
