@@ -14,10 +14,25 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
 
 //微信
 Route::get('weixin','WechatController@index');
 Route::post('weixin','WechatController@receiv');
+
+
+//素材管理
+Route::get('wechat/getMedia','WechatController@getMedia');
+
+
+//测试access_token存入Redis
+Route::get('/wechat/test','WechatController@test');
+
+
+
 
 
 

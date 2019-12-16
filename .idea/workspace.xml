@@ -105,6 +105,11 @@
       <path value="$PROJECT_DIR$/vendor/filp/whoops" />
       <path value="$PROJECT_DIR$/vendor/facade/ignition" />
       <path value="$PROJECT_DIR$/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/vendor/encore/laravel-admin" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
     </include_path>
   </component>
   <component name="ProjectId" id="1UpQOJMoAo3yqsCO2bnmPAuK2wZ" />
@@ -143,7 +148,10 @@
       <updated>1576051025015</updated>
       <workItem from="1576051036549" duration="398000" />
       <workItem from="1576054858312" duration="5667000" />
-      <workItem from="1576112041530" duration="12986000" />
+      <workItem from="1576112041530" duration="20546000" />
+      <workItem from="1576197090106" duration="11694000" />
+      <workItem from="1576283435345" duration="6451000" />
+      <workItem from="1576306945674" duration="7348000" />
     </task>
     <servers />
   </component>

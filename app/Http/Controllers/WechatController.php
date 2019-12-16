@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Model\WechatModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class WechatController extends Controller
 {
@@ -16,12 +17,24 @@ class WechatController extends Controller
         $this->access_token=$this->getAccessToken();
     }
 
+    public function test()
+    {
+        echo $this->access_token;
+    }
+
     //获取access_token
     public function getAccessToken()
     {
+        $key="weixin_access_token";
+        $access_token=Redis::get($key);
+        if ($access_token){
+            return $access_token;
+        }
         $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('APPID').'&secret='.env('APPSECRET');
         $data_json=file_get_contents($url);
         $arr=json_decode($data_json,true);
+        Redis::set($key,$arr['access_token']);
+        Redis::expire($key,3600);
         return $arr['access_token'];
     }
 
@@ -68,13 +81,14 @@ class WechatController extends Controller
             $user=WechatModel::where(['openid'=>$openid])->first();
             if ($user) {
                 $msg="欢迎回来";
-                $response_text='<xml>
+                $response_text=
+                    '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
                           <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
-                        </xml>';
+                    </xml>';
                 //欢迎回家
                 echo $response_text;
             }else{
@@ -82,6 +96,7 @@ class WechatController extends Controller
                 $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
                 $user_info=file_get_contents($url);
                 $data=json_decode($user_info,true);
+                //
                 $user_data=[
                     'openid'=> $openid,
                     'subscribe_time'=>$data['subscribe_time'],
@@ -92,13 +107,14 @@ class WechatController extends Controller
                 //信息入库
                 $uid=WechatModel::insertGetId($user_data);
                 $msg=$user_data['nickname']."谢谢你的关注";
-                $response_text='<xml>
+                $response_text=
+                    '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
                           <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
                           <Content><![CDATA['.$msg.']]></Content>
-                        </xml>';
+                    </xml>';
                 echo $response_text;
             }
         }
@@ -109,6 +125,7 @@ class WechatController extends Controller
         $touser=$xml_obj->FromUserName;//接收消息的用户的openid
         $fromuser=$xml_obj->ToUserName;//开发者公众号的ID
         $time=time();
+        $media_id=$xml_obj->MediaId;
         if ($msg_type=="text") {
             $content="现在是格林威治时间" . date('Y-m-d H:i:s') . "，您发送的内容是：" . $xml_obj->Content;
             $response_text=
@@ -119,7 +136,24 @@ class WechatController extends Controller
                   <MsgType><![CDATA[text]]></MsgType>
                   <Content><![CDATA['.$content.']]></Content>
             </xml>';
-            echo $response_text;
+            echo $response_text;    //回复用户消息
+            //文本消息入库
+
+        }elseif($msg_type=='image'){    //图片消息
+            //下载图片
+
+            //回复图片
+            $response_text=
+                '<xml>
+                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
+                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+                  <CreateTime>'.time().'</CreateTime>
+                  <MsgType><![CDATA[voice]]></MsgType>
+            </xml>';
+        }elseif ($msg_type=='voice'){   //语音消息
+            //下载语音
+            $this->getMedia($media_id,$msg_type);
+            //回复语音
         }
     }
 
@@ -134,5 +168,45 @@ class WechatController extends Controller
         $json_str = file_get_contents($url);
         $log = 'wechat.log';
         file_put_contents($log,$json_str,FILE_APPEND);
+    }
+
+
+//    public function getMedia_voice()
+
+
+//    {
+//        $media_id="YUyNd-9bywMNy86weAf-prhLDCqBLia4bGZxB3LTRQ5GaQk1_sw6rD99xASNcPB9";
+//        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$this->access_token."&media_id=".$media_id;
+//        $data=file_get_contents($url);
+//        $file_name=time().'.arm';
+//        file_put_contents($file_name,$data);
+//        echo "下载文件成功";
+//    }
+
+
+    /**
+     * 素材管理
+     */
+    protected function getMedia($media_id,$msg_type)
+    {
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$this->access_token."&media_id=".$media_id;
+        //获取图片
+        $data=file_get_contents($url);
+        //保存下载图片  获取文件后缀名
+        //获取文件后缀名
+
+
+        //保存下载图片
+        if ($msg_type=='image'){  //保存图片文件
+            $file_name=date('YmdHis').mr_rand(11111,99999);
+
+        }elseif($msg_type=='voice'){    //保存语音文件
+            $file_name=date('YmdHis').mr_rand(11111,99999).'.arm';
+
+        }elseif($msg_type=='video'){    //保存视频文件
+
+        }
+        file_put_contents($file_name,$data);
+
     }
 }

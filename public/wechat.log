@@ -327,3 +327,21 @@
 <Event><![CDATA[subscribe]]></Event>
 <EventKey><![CDATA[]]></EventKey>
 </xml>
+2019-12-13 08:00:55>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576223509</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[B9tZSBnfZk9-1IgPqeI0hBvf6-KetZ-4__Wptkk2dzWWif4aw70ZLOvNWv-W6eRq]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22566095731945619</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
+2019-12-13 10:42:12>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576233702</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[YUyNd-9bywMNy86weAf-prhLDCqBLia4bGZxB3LTRQ5GaQk1_sw6rD99xASNcPB9]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22566241741332347</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
