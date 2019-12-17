@@ -883,3 +883,69 @@
 </xml>
 
 
+2019-12-17 12:54:02>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576580286</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[V1001_TODAY_MUSIC]]></EventKey>
+</xml>
+
+
+2019-12-17 13:08:59>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576580286</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[V1001_TODAY_MUSIC]]></EventKey>
+</xml>
+
+
+2019-12-17 14:33:29>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 14:42:15>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 14:48:05>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 14:48:08>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 14:48:09>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 14:48:12>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+

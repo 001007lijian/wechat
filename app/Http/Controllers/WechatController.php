@@ -77,8 +77,8 @@ class WechatController extends Controller
         $xml_obj=simplexml_load_string($xml_str);//处理xml数据
 
         $event=$xml_obj->Event;//获取事件类型
+        $openid=$xml_obj->FromUserName;//获取用户的openid
         if ($event=='subscribe') {
-            $openid=$xml_obj->FromUserName;//获取用户的openid
             $user=WechatModel::where(['openid'=>$openid])->first();
             if ($user) {
                 $msg="欢迎回来";
@@ -117,6 +117,27 @@ class WechatController extends Controller
                           <Content><![CDATA['.$msg.']]></Content>
                     </xml>';
                 echo $response_text;
+            }
+        }elseif ($event=='CLICK'){   //菜单点击事件
+            if ($xml_obj->EventKey=='weather'){
+                $weather_api="https://free-api.heweather.net/s6/weather/now?location=beijing&key=d0f58d16f0794bdcabea30cf1daf1e0f";
+                $weather_info=file_get_contents($weather_api);
+                $weather_info_arr=json_decode($weather_info,true);
+
+                $cond_txt=$weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
+                $tmp=$weather_info_arr['HeWeather6'][0]['now']['tmp'];
+                $wind_dir=$weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
+
+                $msg=$cond_txt.'温度：'.$tmp.   '风向：'.$wind_dir;
+                $response_weather=
+                    "<xml>
+                  <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                  <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                  <CreateTime>'.time().'</CreateTime>
+                  <MsgType><![CDATA[text]]></MsgType>
+                  <Content><![CDATA['.date('Y-m-d H:i:s').$msg.']]></Content>
+            </xml>";
+                echo $response_weather;
             }
         }
 
@@ -268,7 +289,7 @@ class WechatController extends Controller
                 [
                     "type"=> "click",
                     "name"=> "1905wechat",
-                    "key"=> "1905wechat_key"
+                    "key"=> "wechat_key"
                 ],
             ],
         ];
