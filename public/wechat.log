@@ -840,3 +840,46 @@
 
 2019-12-17 07:28:45>>>>>>\n
 
+2019-12-17 07:48:37>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576568895</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+
+
+2019-12-17 10:08:39>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576568895</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+
+
+2019-12-17 10:12:20>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576568895</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+
+2019-12-17 10:55:43>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576568895</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+
+2019-12-17 10:58:18>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576580286</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[V1001_TODAY_MUSIC]]></EventKey>
+</xml>
+
+

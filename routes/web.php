@@ -29,6 +29,10 @@ Route::post('weixin','WechatController@receiv');
 Route::get('wechat/getMedia','WechatController@getMedia');
 
 
+//菜单
+Route::get('wechat/createMenu','WechatController@createMenu');
+
+
 //测试access_token存入Redis
 Route::get('/wechat/test','WechatController@test');
 

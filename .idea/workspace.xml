@@ -14,6 +14,9 @@
       <executable />
     </execution>
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="wechat" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -158,7 +161,7 @@
       <workItem from="1576283435345" duration="6451000" />
       <workItem from="1576306945674" duration="9203000" />
       <workItem from="1576486190860" duration="7056000" />
-      <workItem from="1576540316344" duration="16966000" />
+      <workItem from="1576540316344" duration="22297000" />
     </task>
     <servers />
   </component>
