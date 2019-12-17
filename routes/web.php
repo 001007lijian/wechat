@@ -29,7 +29,7 @@ Route::post('weixin','WechatController@receiv');
 Route::get('wechat/getMedia','WechatController@getMedia');
 
 
-//菜单
+//自定义菜单
 Route::get('wechat/createMenu','WechatController@createMenu');
 
 

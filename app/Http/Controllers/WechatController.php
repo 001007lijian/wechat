@@ -283,21 +283,23 @@ class WechatController extends Controller
      */
     public function createMenu()
     {
-        $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=.$this->access_token";
-        $menu=[
-            'button'=>[
+        //创建自定义菜单的接口地址
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        $menu = [
+            'button'    => [
                 [
-                    "type"=> "click",
-                    "name"=> "获取天气",
-                    "key"=> "weather"
+                    'type'  => 'click',
+                    'name'  => '获取天气',
+                    'key'   => 'weather'
                 ],
-            ],
+            ]
         ];
-        $menu_json=json_encode($menu,JSON_UNESCAPED_UNICODE);
-        $client=new Client();
-        $response=$client->request('POST',$url,[
-            'body'=>$menu_json
+        $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
+        $client = new Client();
+        $response = $client->request('POST',$url,[
+            'body'  => $menu_json
         ]);
-        echo $response->getBody();  //接收微信接口的相应数据
+        echo '<pre>';print_r($menu);echo '</pre>';
+        echo $response->getBody();      //接收 微信接口的响应数据
     }
 }
