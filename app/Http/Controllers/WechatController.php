@@ -123,7 +123,7 @@ class WechatController extends Controller
                 $weather_api="https://free-api.heweather.net/s6/weather/now?location=beijing&key=d0f58d16f0794bdcabea30cf1daf1e0f";
                 $weather_info=file_get_contents($weather_api);
                 $weather_info_arr=json_decode($weather_info,true);
-
+                echo "<pre>";  print_r($weather_info_arr); echo "</pre>";
                 $cond_txt=$weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
                 $tmp=$weather_info_arr['HeWeather6'][0]['now']['tmp'];
                 $wind_dir=$weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
@@ -288,12 +288,12 @@ class WechatController extends Controller
             'button'=>[
                 [
                     "type"=> "click",
-                    "name"=> "1905wechat",
-                    "key"=> "wechat_key"
+                    "name"=> "获取天气",
+                    "key"=> "weather"
                 ],
             ],
         ];
-        $menu_json=json_encode($menu);
+        $menu_json=json_encode($menu,JSON_UNESCAPED_UNICODE);
         $client=new Client();
         $response=$client->request('POST',$url,[
             'body'=>$menu_json

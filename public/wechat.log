@@ -949,3 +949,19 @@
       <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
 </xml>
 
+2019-12-17 14:57:01>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
+2019-12-17 15:06:05>>>>>>\n<xml>
+      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+      <CreateTime>'.time().'</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA['.date('Y-m-d H:i:s').'晴天'.']]></Content>
+</xml>
+
