@@ -142,19 +142,48 @@ class WechatController extends Controller
 
         }elseif($msg_type=='image'){    //图片消息
             //下载图片
-
+            $this->getMedia($media_id,$msg_type);
             //回复图片
             $response_text=
                 '<xml>
                   <ToUserName><![CDATA['.$touser.']]></ToUserName>
                   <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
                   <CreateTime>'.time().'</CreateTime>
-                  <MsgType><![CDATA[voice]]></MsgType>
+                  <MsgType><![CDATA[image]]></MsgType>
+                  <Image>
+                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                  </Image>
             </xml>';
         }elseif ($msg_type=='voice'){   //语音消息
             //下载语音
             $this->getMedia($media_id,$msg_type);
             //回复语音
+            $response_text=
+                '<xml>
+                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
+                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+                  <CreateTime>'.time().'</CreateTime>
+                  <MsgType><![CDATA[voice]]></MsgType>
+                  <Voice>
+                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                  </Voice>
+            </xml>';
+        }elseif($msg_type=='video'){
+            //下载视频
+            $this->getMedia($media_id,$msg_type);
+            //回复
+            $response_text=
+                '<xml>
+                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
+                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
+                  <CreateTime>'.time().'</CreateTime>
+                  <MsgType><![CDATA[video]]></MsgType>
+                  <Video>
+                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                    <Title><![CDATA[测试]]></Title>
+                    <Description><![CDATA[不可描述]]></Description>
+                  </Video>
+            </xml>';
         }
     }
 
@@ -202,16 +231,16 @@ class WechatController extends Controller
         //保存文件
         $save_path='wechat_media/';
         if ($msg_type=='image'){  //保存图片文件
-            $file_name=date('YmdHis').mr_rand(11111,99999);
-
+            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
+            $save_path=$save_path.'img/'.$file_name;
         }elseif($msg_type=='voice'){    //保存语音文件
-            $file_name=date('YmdHis').mr_rand(11111,99999).'.arm';
-
+            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
+            $save_path=$save_path.'voice/'.$file_name;
         }elseif($msg_type=='video'){    //保存视频文件
-
+            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
+            $save_path=$save_path.'video/'.$file_name;
         }
-        file_put_contents($file_name,$data);
-
+        file_put_contents($save_path,$file_content);
     }
 
     /**
