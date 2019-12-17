@@ -228,7 +228,6 @@ class WechatController extends Controller
         $response=$client->request('GET',$url);
         //获取文件后缀名
         $f = $response->getHeader('Content-disposition')[0];
-        dd($f);
         $extension=substr(trim($f,'"'),strpos($f,'.'));
         //获取文件内容
         $file_content=$response->getBody();
