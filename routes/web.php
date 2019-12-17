@@ -17,6 +17,7 @@ Route::get('/', function () {
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+Route::get('/flush/access_token','WechatController@flushAccessToken');  //刷新access_token
 
 
 //微信

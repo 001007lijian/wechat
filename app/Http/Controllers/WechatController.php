@@ -255,4 +255,13 @@ class WechatController extends Controller
         Redis::del($key);
         echo $this->getAccessToken();
     }
+
+
+    /**
+     * 菜单
+     */
+    public function createMenu()
+    {
+
+    }
 }
