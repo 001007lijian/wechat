@@ -283,7 +283,7 @@ class WechatController extends Controller
      */
     public function createMenu()
     {
-        //创建自定义菜单的接口地址
+        //创建自定义菜单的接口地 址
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu = [
             'button'    => [
