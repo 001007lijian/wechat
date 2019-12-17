@@ -70,7 +70,7 @@ class WechatController extends Controller
         $log="wechat.log";
         $xml_str=file_get_contents("php://input");
         //将接收的数据记录到日志文件
-        $data=date('Y-m-d H:i:s').'>>>>>>\n'. $xml_str;
+        $data=date('Y-m-d H:i:s').'>>>>>>\n'. $xml_str."\n\n";
         file_put_contents($log,$data,FILE_APPEND);
 
 
@@ -144,7 +144,7 @@ class WechatController extends Controller
             //下载图片
             $this->getMedia($media_id,$msg_type);
             //回复图片
-            $response_text=
+            $response_img=
                 '<xml>
                   <ToUserName><![CDATA['.$touser.']]></ToUserName>
                   <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
@@ -154,11 +154,12 @@ class WechatController extends Controller
                     <MediaId><![CDATA['.$media_id.']]></MediaId>
                   </Image>
             </xml>';
+            echo $response_img;
         }elseif ($msg_type=='voice'){   //语音消息
             //下载语音
             $this->getMedia($media_id,$msg_type);
             //回复语音
-            $response_text=
+            $response_voice=
                 '<xml>
                   <ToUserName><![CDATA['.$touser.']]></ToUserName>
                   <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
@@ -168,11 +169,12 @@ class WechatController extends Controller
                     <MediaId><![CDATA['.$media_id.']]></MediaId>
                   </Voice>
             </xml>';
+            echo $response_voice;
         }elseif($msg_type=='video'){
             //下载视频
             $this->getMedia($media_id,$msg_type);
             //回复
-            $response_text=
+            $response_video=
                 '<xml>
                   <ToUserName><![CDATA['.$touser.']]></ToUserName>
                   <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
@@ -184,6 +186,7 @@ class WechatController extends Controller
                     <Description><![CDATA[不可描述]]></Description>
                   </Video>
             </xml>';
+            echo $response_video;
         }
     }
 
@@ -224,21 +227,21 @@ class WechatController extends Controller
         $client=new Client();
         $response=$client->request('GET',$url);
         //获取文件后缀名
-        $f=$response->getHeader('Content-disposition')[0];
+        $f = $response->getHeader('Content-disposition')[0];
         $extension=substr(trim($f,'"'),strpos($f,'.'));
         //获取文件内容
         $file_content=$response->getBody();
         //保存文件
         $save_path='wechat_media/';
         if ($msg_type=='image'){  //保存图片文件
-            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
-            $save_path=$save_path.'img/'.$file_name;
+            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
+            $save_path=$save_path .'img/'. $file_name;
         }elseif($msg_type=='voice'){    //保存语音文件
-            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
-            $save_path=$save_path.'voice/'.$file_name;
+            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
+            $save_path=$save_path .'voice/'. $file_name;
         }elseif($msg_type=='video'){    //保存视频文件
-            $file_name=date('YmdHis').mr_rand(11111,99999).$extension;
-            $save_path=$save_path.'video/'.$file_name;
+            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
+            $save_path=$save_path .'video/'. $file_name;
         }
         file_put_contents($save_path,$file_content);
     }
@@ -248,7 +251,7 @@ class WechatController extends Controller
      */
     public function flushAccessToken()
     {
-        $key="wechat_access_token";
+        $key="wexin_access_token";
         Redis::del($key);
         echo $this->getAccessToken();
     }
