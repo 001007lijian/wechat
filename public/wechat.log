@@ -1,0 +1,17 @@
+2019-12-17 15:38:53>>>>>>\n 'button'    => [
+                [
+                    'type'  => 'click',
+                    'name'  => '获取天气',
+                    'key'   => 'weather'
+                ],
+            ]
+
+2019-12-17 15:57:59>>>>>>\n<xml><ToUserName><![CDATA[gh_716cf8264d98]]></ToUserName>
+<FromUserName><![CDATA[orhevwvh1RHerC-U_ytW5Ts2IfpA]]></FromUserName>
+<CreateTime>1576598253</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[weather]]></EventKey>
+</xml>
+
+
