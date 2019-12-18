@@ -292,8 +292,14 @@ class WechatController extends Controller
                     'name'  => '获取天气',
                     'key'   => 'weather'
                 ],
+                [
+                    'type'  => 'view',
+                    'name'  => '投票',
+                    'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri='.urlencode('http://1905lijian.comcto.com/').'&response_type=code&scope=snsapi_userinfo#wechat_redirectm'
+                ],
             ]
         ];
+        echo "<pre>"; print_r($menu);  echo "</pre>";
         $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
         $client = new Client();
         $response = $client->request('POST',$url,[
