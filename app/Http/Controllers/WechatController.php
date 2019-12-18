@@ -130,13 +130,13 @@ class WechatController extends Controller
 
                 $msg=$cond_txt.'温度：'.$tmp.   '风向：'.$wind_dir;
                 $response_weather=
-                    "<xml>
+                    '<xml>
                   <ToUserName><![CDATA['.$openid.']]></ToUserName>
                   <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
                   <CreateTime>'.time().'</CreateTime>
                   <MsgType><![CDATA[text]]></MsgType>
-                  <Content><![CDATA['.date('Y-m-d H:i:s').$msg.']]></Content>
-            </xml>";
+                  <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
+                </xml>';
                 echo $response_weather;
             }
         }
@@ -283,7 +283,9 @@ class WechatController extends Controller
      */
     public function createMenu()
     {
-        //创建自定义菜单的接口地 址
+        $url='http://1905lijian.comcto.com/vote/index';
+        $redirect_uri=urlencode($url);  //授权后跳转页面
+        //创建自定义菜单的接口地址
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu = [
             'button'    => [
@@ -295,7 +297,7 @@ class WechatController extends Controller
                 [
                     'type'  => 'view',
                     'name'  => '投票',
-                    'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri='.urlencode('http://1905lijian.comcto.com/').'&response_type=code&scope=snsapi_userinfo#wechat_redirectm'
+                    'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=wechat#wechat_redirectm'
                 ],
             ]
         ];
