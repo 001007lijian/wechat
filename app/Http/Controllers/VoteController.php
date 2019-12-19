@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 
@@ -18,14 +18,14 @@ class VoteController extends Controller
     {
 //        echo "<pre>"; print_r($_GET);  echo "</pre>";  die;
         $code=$_GET['code'];
-        //获取access_token 
+        //获取access_token
         $data=$this->getAccessToken($code);
         //获取用户基本信息
         $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
 
         //保存用户信息
-        $userinfo_="h:u:".$data['openid'];
-        Redis::hMset($userinfo_);
+        $userinfo_key="h:u:".$data['openid'];
+        Redis::hMset($userinfo_key,$userinfo);
 
 
         //处理业务逻辑
@@ -88,8 +88,8 @@ class VoteController extends Controller
         $uid=1000;
         $key='h:user_info:uid'.$uid;
         $user_info=[
-            'user_name'=>'zhangsan',
-            'email'=>'zhangsan@qq.com',
+            'user_name'=>'lijian',
+            'email'=>'lijian@qq.com',
             'age'=>19,
             'sex'=>1
         ];

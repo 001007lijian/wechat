@@ -146,7 +146,6 @@ class WechatController extends Controller
 
         $touser=$xml_obj->FromUserName;//接收消息的用户的openid
         $fromuser=$xml_obj->ToUserName;//开发者公众号的ID
-        $time=time();
         $media_id=$xml_obj->MediaId;
         if ($msg_type=="text") {
             $content="现在是格林威治时间" . date('Y-m-d H:i:s') . "，您发送的内容是：" . $xml_obj->Content;
@@ -154,7 +153,7 @@ class WechatController extends Controller
             '<xml>
                   <ToUserName><![CDATA['.$touser.']]></ToUserName>
                   <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-                  <CreateTime>'.$time.'</CreateTime>
+                  <CreateTime>'.time().'</CreateTime>
                   <MsgType><![CDATA[text]]></MsgType>
                   <Content><![CDATA['.$content.']]></Content>
             </xml>';
@@ -265,6 +264,7 @@ class WechatController extends Controller
             $save_path=$save_path .'video/'. $file_name;
         }
         file_put_contents($save_path,$file_content);
+        echo $save_path;die;
     }
 
     /**
