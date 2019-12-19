@@ -15,7 +15,7 @@ class IndexController extends Controller
         //判断用户是否存在1
         $openid=$data['openid'];
         $user=WechatModel::where(['openid'=>$openid])->first();
-        if ($user){ //用户已存在
+        if ($user){ //用户已存在1
             $userinfo=$user->toArray();
         }else{
             $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
