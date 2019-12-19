@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
+    public function delKey()
+    {
+        $key=$_GET['k'];
+        echo 'Delete Key'.$key;echo"</br>";
+        Redis::del($key);
+    }
+
+
     public function index()
     {
 //        echo "<pre>"; print_r($_GET);  echo "</pre>";  die;
@@ -32,15 +40,13 @@ class VoteController extends Controller
         }
 
         $total=Redis::zCard($key);  //获取总数
-        echo '投票总人数：'.$total;   echo '</br>';
+//        echo '投票总人数：'.$total;   echo '</br>';
         $members=Redis::zRange($key,0,-1,true); //获取所有投票人的openid
         echo "<pre>";   print_r($members);  echo "</pre>";
         foreach ($members as $k=>$v){
-            echo "用户： ".$k . ' 投票时间: '. date('Y-m-d H:i:s',$v);echo '</br>';
             $u_k='h:u'.$k;
-//            $u=Redis::hgetAll($u_k);
-            $u=Redis::hMget($u_k,['nickname','sex','headimgurl']);
-            echo "<pre>";   print_r($u);   echo "</pre>";
+            $u=Redis::hgetAll($u_k);
+//            $u=Redis::hMget($u_k,['nickname','sex','headimgurl']);
             echo '<img src="'.$u['headimgurl'].'">';
         }
     }
