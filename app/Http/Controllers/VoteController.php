@@ -15,13 +15,18 @@ class VoteController extends Controller
         //获取用户基本信息
         $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
 
+        //保存用户信息
+        $userinfo_="h:u".$data['openid'];
+        Redis::hMset($userinfo_);
+
+
         //处理业务逻辑
         $openid=$userinfo['openid'];
         $key = 'ss:vote:lijian';
 
         //判断是否已经投过票
         if (Redis::zrank($key,$userinfo['openid'])){
-            echo "已经投过票了";
+            echo "您已经投过票了";
         }else{
             Redis::Zadd($key,time(),$openid);
         }
@@ -32,6 +37,10 @@ class VoteController extends Controller
         echo "<pre>";   print_r($members);  echo "</pre>";
         foreach ($members as $k=>$v){
             echo "用户： ".$k . ' 投票时间: '. date('Y-m-d H:i:s',$v);echo '</br>';
+            $u_k='h:u'.$k;
+//            $u=Redis::hgetAll($u_k);
+            $u=Redis::hMget($u_k,['nickname',]);
+            echo "<pre>";   print_r($u);   echo "</pre>";
         }
     }
 
@@ -61,5 +70,26 @@ class VoteController extends Controller
             die("出错了 40001");       // 40001 标识获取用户信息失败
         }
         return $data;           // 返回用户信息
+    }
+
+
+    /**
+     *
+     */
+    public function hashTest()
+    {
+        $uid=1000;
+        $key='h:user_info:uid'.$uid;
+        $user_info=[
+            'user_name'=>'zhangsan',
+            'email'=>'zhangsan@qq.com',
+            'age'=>19,
+            'sex'=>1
+        ];
+        Redis::hMset($key,$user_info);
+        die;
+        echo "<hr/>";
+        $u=Redis::hGetAll($key);
+        echo "<pre>";   print_r($u);   echo "</pre>";
     }
 }
