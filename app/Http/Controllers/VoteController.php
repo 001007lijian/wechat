@@ -24,7 +24,7 @@ class VoteController extends Controller
         $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
 
         //保存用户信息
-        $userinfo_="h:u".$data['openid'];
+        $userinfo_="h:u:".$data['openid'];
         Redis::hMset($userinfo_);
 
 
@@ -44,7 +44,7 @@ class VoteController extends Controller
         $members=Redis::zRange($key,0,-1,true); //获取所有投票人的openid
         echo "<pre>";   print_r($members);  echo "</pre>";
         foreach ($members as $k=>$v){
-            $u_k='h:u'.$k;
+            $u_k='h:u:'.$k;
             $u=Redis::hgetAll($u_k);
 //            $u=Redis::hMget($u_k,['nickname','sex','headimgurl']);
             echo '<img src="'.$u['headimgurl'].'">';
