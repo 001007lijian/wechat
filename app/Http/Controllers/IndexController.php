@@ -19,7 +19,7 @@ class IndexController extends Controller
             $userinfo=$user->toArray();
         }else{
             $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
-            //入库用户信息
+            //入库用户信息1
             WechatModel::insertGetId($userinfo);
         }
         $data=[
