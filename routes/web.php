@@ -32,6 +32,7 @@ Route::get('wechat/test','WechatController@test');
 
 //微信投票
 Route::get('vote/index','VoteController@index');
+Route::get('vote/delkey','VoteController@delKey');
 
 
 
