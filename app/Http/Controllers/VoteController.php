@@ -1,16 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
     public function index()
     {
-        echo "<pre>"; print_r('$_GET');  echo "</pre>";
+        echo "<pre>"; print_r('$_GET');  echo "</pre>";  die;
         $code=$_GET['code'];
-        $this->getAccessToken($code);
+        //获取access_token
+        $data=$this->getAccessToken($code);
+        //获取用户基本信息
+        $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
+
+        //处理业务逻辑
     }
 
 
