@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-//Route::get('/','IndexController@index');    //网站首页
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+Route::get('/','IndexController@index');    //网站首页
 
 
 Route::get('/phpinfo', function () {
