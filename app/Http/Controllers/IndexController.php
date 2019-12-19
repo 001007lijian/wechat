@@ -12,7 +12,7 @@ class IndexController extends Controller
         $code=$_GET['code'];
         $data=$this->getAccessToken($code);
 
-        //判断用户是否存在
+        //判断用户是否存在1
         $openid=$data['openid'];
         $user=WechatModel::where(['openid'=>$openid])->first();
         if ($user){ //用户已存在
