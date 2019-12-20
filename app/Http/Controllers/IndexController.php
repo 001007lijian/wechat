@@ -9,11 +9,10 @@ class IndexController extends Controller
 {
     public function index()
     {
-//        print_r($_GET);die;
+        print_r($_GET);
         $code=$_GET['code'];
         $data=$this->getAccessToken($code);
 
-        //判断用户是否存在1
         $openid=$data['openid'];
         $user=WechatModel::where(['openid'=>$openid])->first();
         if ($user){ //用户已存在2
