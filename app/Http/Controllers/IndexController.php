@@ -9,7 +9,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        print_r($_GET);die;
+//        print_r($_GET);die;
         $code=$_GET['code'];
         $data=$this->getAccessToken($code);
 
