@@ -20,17 +20,31 @@ Route::get('/','IndexController@index');    //网站首页
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+
+
+
 //刷新access_token
 Route::get('/flush/access_token','WechatController@flushAccessToken');
+
+
+
 //微信
 Route::get('weixin','WechatController@index');
 Route::post('weixin','WechatController@receiv');
+
+
 //素材管理
 Route::get('wechat/getMedia','WechatController@getMedia');
+
+
 //自定义菜单
 Route::get('wechat/createMenu','WechatController@createMenu');
+
+
 //测试access_token存入Redis
 Route::get('wechat/test','WechatController@test');
+
+
 
 
 //微信投票
