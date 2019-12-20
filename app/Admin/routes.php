@@ -2,6 +2,8 @@
 
 use Illuminate\Routing\Router;
 
+
+
 Admin::routes();
 
 Route::group([
@@ -12,4 +14,6 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('users', WechatUserController::class);
+
+    $router->resource('goods', GoodsController::class);
 });
