@@ -82,11 +82,11 @@ class WechatUserController extends AdminController
         $form = new Form(new WechatModel);
 
         $form->number('uid', __('Uid'));
-        //$form->text('openid', __('Openid'));
-        //$form->number('subscribe_time', __('Subscribe time'));
-        //$form->switch('sex', __('Sex'));
-        $form->text('nickname', __('Nickname'));
-        //$form->text('headimgurl', __('Headimgurl'));
+        $form->text('openid', __('Openid'));
+//        $form->number('subscribe_time', __('Subscribe time'));
+//        $form->switch('sex', __('Sex'));
+//        $form->text('nickname', __('Nickname'));
+//        $form->text('headimgurl', __('Headimgurl'));
 
         return $form;
     }
