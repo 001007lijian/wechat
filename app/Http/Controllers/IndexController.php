@@ -38,6 +38,7 @@ class IndexController extends Controller
     {
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('APPID').'&secret='.env('APPSECRET').'&code='.$code.'&grant_type=authorization_code';
         $json_data=file_get_contents($url);
+        echo $json_data;
         return json_decode($json_data,true);
     }
 
