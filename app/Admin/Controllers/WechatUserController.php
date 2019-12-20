@@ -11,7 +11,7 @@ use Encore\Admin\Show;
 class WechatUserController extends AdminController
 {
     /**
-     * Title for current resource.
+     * Title for current resource..
      *
      * @var string
      */
