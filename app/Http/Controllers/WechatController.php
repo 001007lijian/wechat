@@ -339,7 +339,6 @@ class WechatController extends Controller
         return vire('wechat/newyear',$data);
     }
 
-
     // 计算jsapi签名
     public function signature($noncestr,$timestamp,$url)
     {
