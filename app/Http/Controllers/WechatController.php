@@ -15,7 +15,7 @@ class WechatController extends Controller
     public function __construct()
     {
         //获取access_token
-        $this->access_token=$this->getAccessToken();
+        $this->access_token = $this->getAccessToken();
     }
 
     public function test()
@@ -26,16 +26,16 @@ class WechatController extends Controller
     //获取access_token
     public function getAccessToken()
     {
-        $key="weixin_access_token";
-        $access_token=Redis::get($key);
-        if ($access_token){
+        $key = "weixin_access_token";
+        $access_token = Redis::get($key);
+        if ($access_token) {
             return $access_token;
         }
-        $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('APPID').'&secret='.env('APPSECRET');
-        $data_json=file_get_contents($url);
-        $arr=json_decode($data_json,true);
-        Redis::set($key,$arr['access_token']);
-        Redis::expire($key,3600);
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . env('APPID') . '&secret=' . env('APPSECRET');
+        $data_json = file_get_contents($url);
+        $arr = json_decode($data_json, true);
+        Redis::set($key, $arr['access_token']);
+        Redis::expire($key, 3600);
         return $arr['access_token'];
     }
 
@@ -52,13 +52,13 @@ class WechatController extends Controller
 
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
 
 
-        if( $tmpStr == $signature ){        //验证通过
+        if ($tmpStr == $signature) {        //验证通过
             echo $echostr;
-        }else{
+        } else {
             die("not ok");
         }
     }
@@ -67,141 +67,141 @@ class WechatController extends Controller
     /*接收微信推送事件*/
     public function receiv()
     {
-        $log="wechat.log";
-        $xml_str=file_get_contents("php://input");
+        $log = "wechat.log";
+        $xml_str = file_get_contents("php://input");
         //将接收的数据记录到日志文件
-        $data=date('Y-m-d H:i:s').'>>>>>>\n'. $xml_str."\n\n";
-        file_put_contents($log,$data,FILE_APPEND);
+        $data = date('Y-m-d H:i:s') . '>>>>>>\n' . $xml_str . "\n\n";
+        file_put_contents($log, $data, FILE_APPEND);
 
 
-        $xml_obj=simplexml_load_string($xml_str);//处理xml数据
+        $xml_obj = simplexml_load_string($xml_str);//处理xml数据
 
-        $event=$xml_obj->Event;//获取事件类型
-        $openid=$xml_obj->FromUserName;//获取用户的openid
-        if ($event=='subscribe') {
-            $user=WechatModel::where(['openid'=>$openid])->first();
+        $event = $xml_obj->Event;//获取事件类型
+        $openid = $xml_obj->FromUserName;//获取用户的openid
+        if ($event == 'subscribe') {
+            $user = WechatModel::where(['openid' => $openid])->first();
             if ($user) {
-                $msg="欢迎回来";
-                $response_text=
+                $msg = "欢迎回来";
+                $response_text =
                     '<xml>
-                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>'.time().'</CreateTime>
+                          <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
+                          <FromUserName><![CDATA[' . $xml_obj->ToUserName . ']]></FromUserName>
+                          <CreateTime>' . time() . '</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA['.$msg.']]></Content>
+                          <Content><![CDATA[' . $msg . ']]></Content>
                     </xml>';
                 //欢迎回家
                 echo $response_text;
-            }else{
+            } else {
                 /*获取用户信息*/
-                $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
-                $user_info=file_get_contents($url);
-                $data=json_decode($user_info,true);
+                $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $this->access_token . "&openid=" . $openid . "&lang=zh_CN";
+                $user_info = file_get_contents($url);
+                $data = json_decode($user_info, true);
                 //
-                $user_data=[
-                    'openid'=> $openid,
-                    'subscribe_time'=>$data['subscribe_time'],
-                    'nickname'=>$data['nickname'],
-                    'sex'=>$data['sex'],
-                    'headimgurl'=>$data['headimgurl'],
+                $user_data = [
+                    'openid' => $openid,
+                    'subscribe_time' => $data['subscribe_time'],
+                    'nickname' => $data['nickname'],
+                    'sex' => $data['sex'],
+                    'headimgurl' => $data['headimgurl'],
                 ];
                 //信息入库
-                $uid=WechatModel::insertGetId($user_data);
-                $msg=$user_data['nickname']."谢谢你的关注";
-                $response_text=
+                $uid = WechatModel::insertGetId($user_data);
+                $msg = $user_data['nickname'] . "谢谢你的关注";
+                $response_text =
                     '<xml>
-                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>'.time().'</CreateTime>
+                          <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
+                          <FromUserName><![CDATA[' . $xml_obj->ToUserName . ']]></FromUserName>
+                          <CreateTime>' . time() . '</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA['.$msg.']]></Content>
+                          <Content><![CDATA[' . $msg . ']]></Content>
                     </xml>';
                 echo $response_text;
             }
-        }elseif ($event=='CLICK'){   //菜单点击事件
-            if ($xml_obj->EventKey=='weather'){
-                $weather_api="https://free-api.heweather.net/s6/weather/now?location=beijing&key=d0f58d16f0794bdcabea30cf1daf1e0f";
-                $weather_info=file_get_contents($weather_api);
-                $weather_info_arr=json_decode($weather_info,true);
+        } elseif ($event == 'CLICK') {   //菜单点击事件
+            if ($xml_obj->EventKey == 'weather') {
+                $weather_api = "https://free-api.heweather.net/s6/weather/now?location=beijing&key=d0f58d16f0794bdcabea30cf1daf1e0f";
+                $weather_info = file_get_contents($weather_api);
+                $weather_info_arr = json_decode($weather_info, true);
 
-                $cond_txt=$weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
-                $tmp=$weather_info_arr['HeWeather6'][0]['now']['tmp'];
-                $wind_dir=$weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
+                $cond_txt = $weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
+                $tmp = $weather_info_arr['HeWeather6'][0]['now']['tmp'];
+                $wind_dir = $weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
 
-                $msg=$cond_txt.'温度：'.$tmp.   '风向：'.$wind_dir;
-                $response_weather=
+                $msg = $cond_txt . '温度：' . $tmp . '风向：' . $wind_dir;
+                $response_weather =
                     '<xml>
-                  <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                  <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                  <CreateTime>'.time().'</CreateTime>
+                  <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
+                  <FromUserName><![CDATA[' . $xml_obj->ToUserName . ']]></FromUserName>
+                  <CreateTime>' . time() . '</CreateTime>
                   <MsgType><![CDATA[text]]></MsgType>
-                  <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
+                  <Content><![CDATA[' . date('Y-m-d H:i:s') . $msg . ']]></Content>
                 </xml>';
                 echo $response_weather;
             }
         }
 
         //判断消息类型
-        $msg_type=$xml_obj->MsgType;
+        $msg_type = $xml_obj->MsgType;
 
-        $touser=$xml_obj->FromUserName;//接收消息的用户的openid
-        $fromuser=$xml_obj->ToUserName;//开发者公众号的ID
-        $media_id=$xml_obj->MediaId;
-        if ($msg_type=="text") {
-            $content="现在是格林威治时间" . date('Y-m-d H:i:s') . "，您发送的内容是：" . $xml_obj->Content;
-            $response_text=
-            '<xml>
-                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
-                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-                  <CreateTime>'.time().'</CreateTime>
+        $touser = $xml_obj->FromUserName;//接收消息的用户的openid
+        $fromuser = $xml_obj->ToUserName;//开发者公众号的ID
+        $media_id = $xml_obj->MediaId;
+        if ($msg_type == "text") {
+            $content = "现在是格林威治时间" . date('Y-m-d H:i:s') . "，您发送的内容是：" . $xml_obj->Content;
+            $response_text =
+                '<xml>
+                  <ToUserName><![CDATA[' . $touser . ']]></ToUserName>
+                  <FromUserName><![CDATA[' . $fromuser . ']]></FromUserName>
+                  <CreateTime>' . time() . '</CreateTime>
                   <MsgType><![CDATA[text]]></MsgType>
-                  <Content><![CDATA['.$content.']]></Content>
+                  <Content><![CDATA[' . $content . ']]></Content>
             </xml>';
             echo $response_text;    //回复用户消息
             //文本消息入库
 
-        }elseif($msg_type=='image'){    //图片消息
+        } elseif ($msg_type == 'image') {    //图片消息
             //下载图片
-            $this->getMedia($media_id,$msg_type);
+            $this->getMedia($media_id, $msg_type);
             //回复图片
-            $response_img=
+            $response_img =
                 '<xml>
-                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
-                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-                  <CreateTime>'.time().'</CreateTime>
+                  <ToUserName><![CDATA[' . $touser . ']]></ToUserName>
+                  <FromUserName><![CDATA[' . $fromuser . ']]></FromUserName>
+                  <CreateTime>' . time() . '</CreateTime>
                   <MsgType><![CDATA[image]]></MsgType>
                   <Image>
-                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                    <MediaId><![CDATA[' . $media_id . ']]></MediaId>
                   </Image>
             </xml>';
             echo $response_img;
-        }elseif ($msg_type=='voice'){   //语音消息
+        } elseif ($msg_type == 'voice') {   //语音消息
             //下载语音
-            $this->getMedia($media_id,$msg_type);
+            $this->getMedia($media_id, $msg_type);
             //回复语音
-            $response_voice=
+            $response_voice =
                 '<xml>
-                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
-                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-                  <CreateTime>'.time().'</CreateTime>
+                  <ToUserName><![CDATA[' . $touser . ']]></ToUserName>
+                  <FromUserName><![CDATA[' . $fromuser . ']]></FromUserName>
+                  <CreateTime>' . time() . '</CreateTime>
                   <MsgType><![CDATA[voice]]></MsgType>
                   <Voice>
-                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                    <MediaId><![CDATA[' . $media_id . ']]></MediaId>
                   </Voice>
             </xml>';
             echo $response_voice;
-        }elseif($msg_type=='video'){
+        } elseif ($msg_type == 'video') {
             //下载视频
-            $this->getMedia($media_id,$msg_type);
+            $this->getMedia($media_id, $msg_type);
             //回复
-            $response_video=
+            $response_video =
                 '<xml>
-                  <ToUserName><![CDATA['.$touser.']]></ToUserName>
-                  <FromUserName><![CDATA['.$fromuser.']]></FromUserName>
-                  <CreateTime>'.time().'</CreateTime>
+                  <ToUserName><![CDATA[' . $touser . ']]></ToUserName>
+                  <FromUserName><![CDATA[' . $fromuser . ']]></FromUserName>
+                  <CreateTime>' . time() . '</CreateTime>
                   <MsgType><![CDATA[video]]></MsgType>
                   <Video>
-                    <MediaId><![CDATA['.$media_id.']]></MediaId>
+                    <MediaId><![CDATA[' . $media_id . ']]></MediaId>
                     <Title><![CDATA[测试]]></Title>
                     <Description><![CDATA[不可描述]]></Description>
                   </Video>
@@ -214,13 +214,13 @@ class WechatController extends Controller
     /**
      * 获取用户基本信息
      */
-    public function getUserInfo($access_token,$openid)
+    public function getUserInfo($access_token, $openid)
     {
-        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $access_token . '&openid=' . $openid . '&lang=zh_CN';
         //发送网络请求
         $json_str = file_get_contents($url);
         $log = 'wechat.log';
-        file_put_contents($log,$json_str,FILE_APPEND);
+        file_put_contents($log, $json_str, FILE_APPEND);
     }
 
 
@@ -240,31 +240,32 @@ class WechatController extends Controller
     /**
      * 素材管理
      */
-    protected function getMedia($media_id,$msg_type)
+    protected function getMedia($media_id, $msg_type)
     {
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$this->access_token."&media_id=".$media_id;
+        $url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=" . $this->access_token . "&media_id=" . $media_id;
         //获取素材内容
-        $client=new Client();
-        $response=$client->request('GET',$url);
+        $client = new Client();
+        $response = $client->request('GET', $url);
         //获取文件后缀名
         $f = $response->getHeader('Content-disposition')[0];
-        $extension=substr(trim($f,'"'),strpos($f,'.'));
+        $extension = substr(trim($f, '"'), strpos($f, '.'));
         //获取文件内容
-        $file_content=$response->getBody();
+        $file_content = $response->getBody();
         //保存文件
-        $save_path='wechat_media/';
-        if ($msg_type=='image'){  //保存图片文件
-            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
-            $save_path=$save_path .'img/'. $file_name;
-        }elseif($msg_type=='voice'){    //保存语音文件
-            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
-            $save_path=$save_path .'voice/'. $file_name;
-        }elseif($msg_type=='video'){    //保存视频文件
-            $file_name=date('YmdHis').mt_rand(11111,99999).$extension;
-            $save_path=$save_path .'video/'. $file_name;
+        $save_path = 'wechat_media/';
+        if ($msg_type == 'image') {  //保存图片文件
+            $file_name = date('YmdHis') . mt_rand(11111, 99999) . $extension;
+            $save_path = $save_path . 'img/' . $file_name;
+        } elseif ($msg_type == 'voice') {    //保存语音文件
+            $file_name = date('YmdHis') . mt_rand(11111, 99999) . $extension;
+            $save_path = $save_path . 'voice/' . $file_name;
+        } elseif ($msg_type == 'video') {    //保存视频文件
+            $file_name = date('YmdHis') . mt_rand(11111, 99999) . $extension;
+            $save_path = $save_path . 'video/' . $file_name;
         }
-        file_put_contents($save_path,$file_content);
-        echo $save_path;die;
+        file_put_contents($save_path, $file_content);
+        echo $save_path;
+        die;
     }
 
     /**
@@ -272,7 +273,7 @@ class WechatController extends Controller
      */
     public function flushAccessToken()
     {
-        $key="wexin_access_token";
+        $key = "wexin_access_token";
         Redis::del($key);
         echo $this->getAccessToken();
     }
@@ -283,38 +284,70 @@ class WechatController extends Controller
      */
     public function createMenu()
     {
-        $url='http://1905lijian.comcto.com/vote/index';
-        $url2='http://1905lijian.comcto.com/';
-        $redirect_uri=urlencode($url);  //授权后跳转页面
-        $redirect_uri2=urlencode($url2);  //跳转商城页面
+        $url = 'http://1905lijian.comcto.com/vote/index';
+        $url2 = 'http://1905lijian.comcto.com/';
+        $redirect_uri = urlencode($url);  //授权后跳转页面
+        $redirect_uri2 = urlencode($url2);  //跳转商城页面
         //创建自定义菜单的接口地址
-        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' . $this->access_token;
         $menu = [
-            'button'    => [
+            'button' => [
                 [
-                    'type'  => 'click',
-                    'name'  => '获取天气',
-                    'key'   => 'weather'
+                    'type' => 'click',
+                    'name' => '获取天气',
+                    'key' => 'weather'
                 ],
                 [
-                    'type'  => 'view',
-                    'name'  => '投票',
-                    'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=wechat#wechat_redirect'
+                    'type' => 'view',
+                    'name' => '投票',
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri=' . $redirect_uri . '&response_type=code&scope=snsapi_userinfo&state=wechat#wechat_redirect'
                 ],
                 [
-                    'type'  => 'view',
-                    'name'  => '商城',
-                    'url'   => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri='.$redirect_uri2.'&response_type=code&scope=snsapi_userinfo&state=wechat#wechat_redirect'
+                    'type' => 'view',
+                    'name' => '商城',
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx313c304baa2906a7&redirect_uri=' . $redirect_uri2 . '&response_type=code&scope=snsapi_userinfo&state=wechat#wechat_redirect'
                 ],
             ]
         ];
-        echo "<pre>"; print_r($menu);  echo "</pre>";
-        $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
+        echo "<pre>";
+        print_r($menu);
+        echo "</pre>";
+        $menu_json = json_encode($menu, JSON_UNESCAPED_UNICODE);
         $client = new Client();
-        $response = $client->request('POST',$url,[
-            'body'  => $menu_json
+        $response = $client->request('POST', $url, [
+            'body' => $menu_json
         ]);
 
         echo $response->getBody();      //接收 微信接口的响应数据
+    }
+
+
+    //元旦活动
+    public function newYear()
+    {
+        $appid=env('APPID');
+        $noncestr = Str::random(8);
+        $timestamp=time();
+        $url=env('APP_URL'). $_SERVER['REQUEST_URI'];
+        $signature=$this->signature($noncestr,$timestamp,$url);
+        $data = [
+            'appid'         => $appid,
+            'timestamp'     => $timestamp,
+            'noncestr'      => $noncestr,
+            'signature'     => $signature
+        ];
+        return vire('wechat/newyear',$data);
+    }
+
+
+    // 计算jsapi签名
+    public function signature($noncestr,$timestamp,$url)
+    {
+        $noncestr = $noncestr;
+        //获取jsapi ticket
+        $ticket = WechatModel::getJsapiTicket();
+        // 拼接带签名字符串
+        $string1 = "jsapi_ticket={$ticket}&noncestr={$noncestr}&timestamp={$timestamp}&url={$url}";
+        return  sha1($string1);
     }
 }
