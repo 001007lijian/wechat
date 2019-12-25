@@ -9,17 +9,17 @@ class IndexController extends Controller
 {
     public function index()
     {
+        print_r($_GET);
         $code=$_GET['code'];
         $data=$this->getAccessToken($code);
 
-        //判断用户是否存在1
         $openid=$data['openid'];
         $user=WechatModel::where(['openid'=>$openid])->first();
-        if ($user){ //用户已存在
+        if ($user){ //用户已存在2
             $userinfo=$user->toArray();
         }else{
             $userinfo=$this->getUserInfo($data['access_token'],$data['openid']);
-            //入库用户信息
+            //入库用户信息1
             WechatModel::insertGetId($userinfo);
         }
         $data=[
@@ -37,6 +37,7 @@ class IndexController extends Controller
     {
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('APPID').'&secret='.env('APPSECRET').'&code='.$code.'&grant_type=authorization_code';
         $json_data=file_get_contents($url);
+        echo $json_data;
         return json_decode($json_data,true);
     }
 

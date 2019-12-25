@@ -10,5 +10,10 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+<<<<<<< HEAD
 .idea
 public/wechat_media
+=======
+public/wechat_media
+.idea
+>>>>>>> store

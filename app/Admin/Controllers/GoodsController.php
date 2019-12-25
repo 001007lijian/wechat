@@ -18,7 +18,7 @@ class GoodsController extends AdminController
     protected $title = '商品管理';
 
     /**
-     * Make a grid builder.
+     * Make a grid builder. nm
      *
      * @return Grid
      */
