@@ -83,7 +83,7 @@ class ExamController extends Controller
                 //
                 $user_data = [
                     'openid' => $openid,
-                    'subscribe_time' => $data['subsscribe_time'],
+                    'subscribe_time' => $data['subscribe_time'],
                     'nickname' => $data['nickname'],
                     'sex' => $data['sex'],
                     'headimgurl' => $data['headimgurl'],
@@ -101,45 +101,43 @@ class ExamController extends Controller
                     </xml>';
                 echo $response_text;
             }
-        }elseif($event == 'CLICK'){
-            //如果是查询积分
-            if ($xml_obj->EventKey=='jf'){
-                $data=WechatModel::where(['openid'=>$openid])->first();
-                $msg="积分总数为：".$data;
-                $response_xml =
-                    '<xml>
-                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                      <CreateTime>'.time().'</CreateTime>
-                      <MsgType><![CDATA[text]]></MsgType>
-                      <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
-                    </xml>';
-                echo $response_xml;
-            }elseif($xml_obj->EventKey=='qd'){
-                //如果是签到
-
-            }
-        }
-
-
+        }//elseif($event == 'CLICK'){
+//            //如果是查询积分
+//            if ($xml_obj->EventKey=='jf'){
+//                $data=WechatModel::where(['openid'=>$openid])->first();
+//                $msg="积分总数为：".$data;
+//                $response_xml =
+//                    '<xml>
+//                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+//                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+//                      <CreateTime>'.time().'</CreateTime>
+//                      <MsgType><![CDATA[text]]></MsgType>
+//                      <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
+//                    </xml>';
+//                echo $response_xml;
+//            }elseif($xml_obj->EventKey=='qd'){
+//                //如果是签到
+//
+//            }
+//        }
     }
 
-    public function createMenu()
-    {
-        $menu = [
-            'button' => [
-                [
-                    'type' => 'click',
-                    'name' => '积分查询',
-                    'key' => 'jf'
-                ],
-                [
-                    'type' => 'click',
-                    'name' => '签到',
-                    'key' => 'qd'
-                ],
-            ]
-        ];
-        echo '<pre>'; print_r($menu); echo '</pre>';
-    }
+//    public function createMenu()
+//    {
+//        $menu = [
+//            'button' => [
+//                [
+//                    'type' => 'click',
+//                    'name' => '积分查询',
+//                    'key' => 'jf'
+//                ],
+//                [
+//                    'type' => 'click',
+//                    'name' => '签到',
+//                    'key' => 'qd'
+//                ],
+//            ]
+//        ];
+//        echo '<pre>'; print_r($menu); echo '</pre>';
+//    }
 }
