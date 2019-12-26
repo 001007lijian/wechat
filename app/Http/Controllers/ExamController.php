@@ -105,7 +105,7 @@ class ExamController extends Controller
             //如果是查询积分
             if ($xml_obj->EventKey=='jifen'){
                 $data=JifenModel::where(['openid'=>$openid])->first();
-                $msg="积分总数为：".$data;
+                $msg="您的积分总数为：".$data['jf_sum'];
                 $response_xml =
                     '<xml>
                       <ToUserName><![CDATA['.$openid.']]></ToUserName>
@@ -117,7 +117,22 @@ class ExamController extends Controller
                 echo $response_xml;
             }elseif($xml_obj->EventKey=='qiandao'){
                 //如果是签到  信息入库
-
+                $data = [
+                    'openid'=>$openid,
+                    'jf_sum'=>'123'
+                ];
+                //信息入库
+                $uid = JifenModel::insertGetId($data);
+                $msg = "签到成功";
+                $response_text =
+                    '<xml>
+                          <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
+                          <FromUserName><![CDATA[' . $xml_obj->ToUserName . ']]></FromUserName>
+                          <CreateTime>' . time() . '</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA[' . $msg . ']]></Content>
+                    </xml>';
+                echo $response_text;
             }
         }
     }
