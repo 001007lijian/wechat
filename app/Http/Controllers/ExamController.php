@@ -121,7 +121,11 @@ class ExamController extends Controller
                 $user_info = file_get_contents($url);
                 $data = json_decode($user_info, true);
                 $data_jf = [
-                    'openid'=>$openid,
+                    'openid' => $openid,
+                    'subscribe_time' => $data['subscribe_time'],
+                    'nickname' => $data['nickname'],
+                    'sex' => $data['sex'],
+                    'headimgurl' => $data['headimgurl'],
                     'jf_sum'=>$data['js_sum']
                 ];
                 //信息入库
