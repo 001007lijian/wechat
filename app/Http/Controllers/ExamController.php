@@ -17,6 +17,15 @@ class ExamController extends Controller
         //获取access_token
         $this->access_token = $this->getAccessToken();
     }
+
+    public function getAccessToken()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . env('APPID') . '&secret=' . env('APPSECRET');
+        $data_json = file_get_contents($url);
+        $arr = json_decode($data_json, true);
+        return $arr['access_token'];
+    }
+
     public function index()
     {
         $token = 'exam20191226';       //开发提前设置好的 token
