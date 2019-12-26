@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Model\ExamModel;
 use Illuminate\Http\Request;
-use App\Model\WechatModel;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
@@ -64,7 +63,7 @@ class ExamController extends Controller
         $event = $xml_obj->Event;
         $openid = $xml_obj->FromUserName;
         if ($event == 'subscribe') {
-            $user = WechatModel::where(['openid' => $openid])->first();
+            $user = ExamModel::where(['openid' => $openid])->first();
             if ($user) {
                 $msg = "欢迎".$user['nickname']."回来";
                 $response_text =
@@ -105,7 +104,7 @@ class ExamController extends Controller
         }elseif($event == 'CLICK'){
             //如果是查询积分
             if ($xml_obj->EventKey=='jifen'){
-                $data=WechatModel::where(['openid'=>$openid])->first();
+                $data=JifenModel::where(['openid'=>$openid])->first();
                 $msg="积分总数为：".$data;
                 $response_xml =
                     '<xml>
