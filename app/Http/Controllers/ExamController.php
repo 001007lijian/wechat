@@ -104,7 +104,7 @@ class ExamController extends Controller
         }elseif($event == 'CLICK'){
             //如果是查询积分
             if ($xml_obj->EventKey=='jifen'){
-                $data=JifenModel::where(['openid'=>$openid])->first();
+                $data = ExamModel::where(['openid' => $openid])->first();
                 $msg="您的积分总数为：".$data['jf_sum'];
                 $response_xml =
                     '<xml>
@@ -117,9 +117,12 @@ class ExamController extends Controller
                 echo $response_xml;
             }elseif($xml_obj->EventKey=='qiandao'){
                 //如果是签到  信息入库
-                $data = [
+                $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
+                $user_info = file_get_contents($url);
+                $data = json_decode($user_info, true);
+                $data_jf = [
                     'openid'=>$openid,
-                    'jf_sum'=>'123'
+                    'jf_sum'=>$data['js_sum']
                 ];
                 //信息入库
                 $uid = JifenModel::insertGetId($data);
