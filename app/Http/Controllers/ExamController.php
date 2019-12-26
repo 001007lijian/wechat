@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Model\ExamModel;
 use Illuminate\Http\Request;
 use App\Model\WechatModel;
 use Illuminate\Support\Facades\Redis;
@@ -89,7 +90,7 @@ class ExamController extends Controller
                     'headimgurl' => $data['headimgurl'],
                 ];
                 //信息入库
-                $uid = WechatModel::insertGetId($user_data);
+                $uid = ExamModel::insertGetId($user_data);
                 $msg = "欢迎".$user_data['nickname'] ."同学关注";
                 $response_text =
                     '<xml>
@@ -101,43 +102,51 @@ class ExamController extends Controller
                     </xml>';
                 echo $response_text;
             }
-        }//elseif($event == 'CLICK'){
-//            //如果是查询积分
-//            if ($xml_obj->EventKey=='jf'){
-//                $data=WechatModel::where(['openid'=>$openid])->first();
-//                $msg="积分总数为：".$data;
-//                $response_xml =
-//                    '<xml>
-//                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
-//                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-//                      <CreateTime>'.time().'</CreateTime>
-//                      <MsgType><![CDATA[text]]></MsgType>
-//                      <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
-//                    </xml>';
-//                echo $response_xml;
-//            }elseif($xml_obj->EventKey=='qd'){
-//                //如果是签到
-//
-//            }
-//        }
+        }elseif($event == 'CLICK'){
+            //如果是查询积分
+            if ($xml_obj->EventKey=='jifen'){
+                $data=WechatModel::where(['openid'=>$openid])->first();
+                $msg="积分总数为：".$data;
+                $response_xml =
+                    '<xml>
+                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                      <CreateTime>'.time().'</CreateTime>
+                      <MsgType><![CDATA[text]]></MsgType>
+                      <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
+                    </xml>';
+                echo $response_xml;
+            }elseif($xml_obj->EventKey=='qiandao'){
+                //如果是签到  信息入库
+
+            }
+        }
     }
 
-//    public function createMenu()
-//    {
-//        $menu = [
-//            'button' => [
-//                [
-//                    'type' => 'click',
-//                    'name' => '积分查询',
-//                    'key' => 'jf'
-//                ],
-//                [
-//                    'type' => 'click',
-//                    'name' => '签到',
-//                    'key' => 'qd'
-//                ],
-//            ]
-//        ];
-//        echo '<pre>'; print_r($menu); echo '</pre>';
-//    }
+    public function createMenu()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        $menu = [
+            'button'    => [
+                [
+                    'type'  => 'click',
+                    'name'  => '积分查询',
+                    'key'   => 'jifen'
+                ],
+                [
+                    'type'  => 'click',
+                    'name'  => '签到',
+                    'key'   => 'qiandao'
+                ],
+            ]
+        ];
+        //echo '<pre>';print_r($menu);echo '</pre>';die;
+        $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
+        $client = new Client();
+        $response = $client->request('POST',$url,[
+            'body'  => $menu_json
+        ]);
+        echo '<pre>';print_r($menu);echo '</pre>';
+        echo $response->getBody();      //接收 微信接口的响应数据
+    }
 }
