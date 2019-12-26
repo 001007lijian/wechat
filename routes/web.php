@@ -59,3 +59,5 @@ Route::get('/user/xml','user\\LoginController@xml');
 //考试
 Route::get('exam','ExamController@index');
 Route::post('exam','ExamController@receiv');
+Route::get('exam/createMenu','ExamController@createMenu');
+

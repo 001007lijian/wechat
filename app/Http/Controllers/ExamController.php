@@ -20,9 +20,16 @@ class ExamController extends Controller
 
     public function getAccessToken()
     {
+        $key = "exam_token";
+        $access_token = Redis::get($key);
+        if ($access_token) {
+            return $access_token;
+        }
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . env('APPID') . '&secret=' . env('APPSECRET');
         $data_json = file_get_contents($url);
         $arr = json_decode($data_json, true);
+        Redis::set($key, $arr['access_token']);
+        Redis::expire($key, 3600);
         return $arr['access_token'];
     }
 
@@ -48,15 +55,13 @@ class ExamController extends Controller
     {
         $log = "exam.log";
         $xml_str = file_get_contents("php://input");
-        //将接收的数据记录到日志文件
         $data = date('Y-m-d H:i:s') . '>>>>>> \n' . $xml_str . "\n\n";
         file_put_contents($log, $data, FILE_APPEND);
 
+        $xml_obj = simplexml_load_string($xml_str);
 
-        $xml_obj = simplexml_load_string($xml_str);//处理xml数据
-
-        $event = $xml_obj->Event;//获取事件类型
-        $openid = $xml_obj->FromUserName;//获取用户的openid
+        $event = $xml_obj->Event;
+        $openid = $xml_obj->FromUserName;
         if ($event == 'subscribe') {
             $user = WechatModel::where(['openid' => $openid])->first();
             if ($user) {
@@ -72,21 +77,20 @@ class ExamController extends Controller
                 //欢迎回家
                 echo $response_text;
             } else {
-                /*获取用户信息*/
-                $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $this->access_token . "&openid=" . $openid . "&lang=zh_CN";
+                $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$openid."&lang=zh_CN";
                 $user_info = file_get_contents($url);
                 $data = json_decode($user_info, true);
                 //
                 $user_data = [
                     'openid' => $openid,
-                    'subscribe_time' => $data['subscribe_time'],
+                    'subscribe_time' => $data['subsscribe_time'],
                     'nickname' => $data['nickname'],
                     'sex' => $data['sex'],
                     'headimgurl' => $data['headimgurl'],
                 ];
                 //信息入库
                 $uid = WechatModel::insertGetId($user_data);
-                $msg = $user_data['nickname'] . "谢谢你的关注";
+                $msg = "欢迎".$user_data['nickname'] ."同学关注";
                 $response_text =
                     '<xml>
                           <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
@@ -97,27 +101,45 @@ class ExamController extends Controller
                     </xml>';
                 echo $response_text;
             }
+        }elseif($event == 'CLICK'){
+            //如果是查询积分
+            if ($xml_obj->EventKey=='jf'){
+                $data=WechatModel::where(['openid'=>$openid])->first();
+                $msg="积分总数为：".$data;
+                $response_xml =
+                    '<xml>
+                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                      <CreateTime>'.time().'</CreateTime>
+                      <MsgType><![CDATA[text]]></MsgType>
+                      <Content><![CDATA['. date('Y-m-d H:i:s') .  $msg .']]></Content>
+                    </xml>';
+                echo $response_xml;
+            }elseif($xml_obj->EventKey=='qd'){
+                //如果是签到
+
+            }
         }
 
-        //判断消息类型
-        $msg_type = $xml_obj->MsgType;
 
-        $touser = $xml_obj->FromUserName;//接收消息的用户的openid
-        $fromuser = $xml_obj->ToUserName;//开发者公众号的ID
-        $media_id = $xml_obj->MediaId;
-        if ($msg_type == "text") {
-            $content = "现在是格林威治时间" . date('Y-m-d H:i:s') . "，您发送的内容是：" . $xml_obj->Content;
-            $response_text =
-                '<xml>
-                  <ToUserName><![CDATA[' . $touser . ']]></ToUserName>
-                  <FromUserName><![CDATA[' . $fromuser . ']]></FromUserName>
-                  <CreateTime>' . time() . '</CreateTime>
-                  <MsgType><![CDATA[text]]></MsgType>
-                  <Content><![CDATA[' . $content . ']]></Content>
-            </xml>';
-            echo $response_text;    //回复用户消息
-            //文本消息入库
+    }
 
-        }
+    public function createMenu()
+    {
+        $menu = [
+            'button' => [
+                [
+                    'type' => 'click',
+                    'name' => '积分查询',
+                    'key' => 'jf'
+                ],
+                [
+                    'type' => 'click',
+                    'name' => '签到',
+                    'key' => 'qd'
+                ],
+            ]
+        ];
+        echo '<pre>'; print_r($menu); echo '</pre>';
     }
 }
