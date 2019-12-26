@@ -65,7 +65,7 @@ class ExamController extends Controller
         if ($event == 'subscribe') {
             $user = WechatModel::where(['openid' => $openid])->first();
             if ($user) {
-                $msg = "欢迎回来";
+                $msg = "欢迎".$user['nickname']."回来";
                 $response_text =
                     '<xml>
                           <ToUserName><![CDATA[' . $openid . ']]></ToUserName>
